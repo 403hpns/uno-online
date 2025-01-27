@@ -1,84 +1,88 @@
-# Turborepo starter
+# UNO Online 🃏
 
-This Turborepo starter is maintained by the Turborepo core team.
+Welcome to **UNO Online**, a real-time multiplayer implementation of the classic card game UNO, built with modern web technologies. This project allows players to create lobbies, invite friends, and play UNO together in real-time.
 
-## Using this example
+---
 
-Run the following command:
+## 🚀 Features
 
-```sh
-npx create-turbo@latest
-```
+- **Real-time multiplayer gameplay**: Play UNO with friends or random players online.
+- **Lobby system**: Create or join lobbies with unique codes.
+- **Player authentication**: Unique tokens ensure secure and persistent player identification.
+- **Interactive gameplay**: Draw cards, play cards, and interact with other players in real-time.
+- **Responsive design**: Play on desktop or mobile devices.
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
+## 🛠️ Technologies Used
 
-### Apps and Packages
+- **Frontend**: 
+  - [Nuxt.js](https://nuxtjs.org/) - A Vue.js framework for building modern web applications.
+  - [Socket.IO Client](https://socket.io/) - Real-time communication between the client and server.
+  
+- **Backend**:
+  - [NestJS](https://nestjs.com/) - A progressive Node.js framework for building efficient and scalable server-side applications.
+  - [Socket.IO](https://socket.io/) - Enables real-time, bidirectional communication between clients and the server.
+  - [Redis](https://redis.io/) - Used for caching player sessions and game states.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- **Other Tools**:
+  - [TypeScript](https://www.typescriptlang.org/) - Adds type safety and improves developer productivity.
+  - [Vite](https://vitejs.dev/) - Fast build tool for modern web development.
+  - [Docker](https://www.docker.com/) - Containerization for easy deployment and scalability.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+---
 
-### Utilities
+## 🎮 How to Play
 
-This Turborepo has some additional tools already setup for you:
+1. **Join the Game**:
+   - Enter your nickname and join a lobby or create a new one.
+   - Share the lobby code with friends to invite them.
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+2. **Start the Game**:
+   - Once all players are ready, the game begins.
+   - Follow the rules of UNO to play cards, draw cards, and challenge your opponents.
 
-### Build
+3. **Win the Game**:
+   - Be the first player to get rid of all your cards to win the round.
 
-To build all apps and packages, run the following command:
+---
 
-```
-cd my-turborepo
-pnpm build
-```
+## 🚀 Getting Started
 
-### Develop
+### Prerequisites
 
-To develop all apps and packages, run the following command:
+- Node.js (v16 or higher)
+- Docker (optional, for Redis)
+- Redis (can be installed locally or via Docker)
 
-```
-cd my-turborepo
-pnpm dev
-```
+### Installation
 
-### Remote Caching
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-username/uno-online.git
+   cd uno-online
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+3. **Run Docker**
+   ```bash
+   docker compose up -d
+   ```
+4. **Start development server**
+   ```bash
+   pnpm dev
+   ```
+5. **Open the game**
+   Visit `http://localhost:3000` in your browser to start playing.
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+## 🤝 Contributing
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+1. Fork the repository.
+2. Create a new branch for your feature or bugfix.
+3. Commit your changes and push to your fork.
+4. Submit a pull request with a detailed description of your changes.
 
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+      
