@@ -1,10 +1,10 @@
-import type { Player } from './player';
+import type { Player } from './player.js';
 
 export interface GameState {
   id: string;
   players: Player[];
   currentPlayer: string;
-  currentColor: string;
+  currentColor?: string;
   deck: string[];
   discardPile: string[];
   direction: 'clockwise' | 'counterclockwise';

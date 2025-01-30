@@ -9,26 +9,13 @@ import {
   WebSocketServer,
   WsException,
 } from '@nestjs/websockets';
+import { type LobbyState } from '@repo/shared/src/interfaces/lobby';
+import { type Player } from '@repo/shared/src/interfaces/player';
 import { Cache } from 'cache-manager';
 import { customAlphabet } from 'nanoid';
 import { Server, Socket } from 'socket.io';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { PlayerService } from 'src/player/player.service';
-
-export type Player = {
-  id: string;
-  nickname: string;
-  token: string;
-  currentLobbyId?: string;
-  currentGameId?: string;
-};
-
-interface LobbyState {
-  id: string;
-  ownerId: string;
-  players: Player[];
-}
-
 const LOBBY_MAX_PLAYERS = 2;
 
 @WebSocketGateway({

@@ -1,8 +1,8 @@
 import { socket } from '@/lib/socket';
+import type { GameState } from '@repo/shared/interfaces/game';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import type { GameState } from '~/interfaces/game';
 
 export const useGameStore = defineStore('game', () => {
   const gameState = ref<GameState | null>(null);

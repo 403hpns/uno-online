@@ -1,8 +1,8 @@
 import { socket } from '@/lib/socket';
+import type { LobbyState } from '@repo/shared/interfaces/lobby';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import type { LobbyState } from '~/interfaces/lobby';
 import { usePlayerStore } from './player';
 const CREATE_LOBBY_EVENT = 'lobby.create';
 const JOIN_LOBBY_EVENT = 'lobby.join';

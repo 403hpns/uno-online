@@ -6,11 +6,11 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
+import { type Player } from '@repo/shared/src/interfaces/player';
 import { Cache } from 'cache-manager';
 import { randomUUID } from 'crypto';
 import { customAlphabet } from 'nanoid';
 import { Socket } from 'socket.io';
-import { Player } from 'src/lobby/lobby.gateway';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

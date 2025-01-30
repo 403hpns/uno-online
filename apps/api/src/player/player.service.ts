@@ -1,7 +1,7 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
+import { type Player } from '@repo/shared/src/interfaces/player';
 import { Cache } from 'cache-manager';
-import { Player } from 'src/lobby/lobby.gateway';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 

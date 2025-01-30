@@ -6,30 +6,15 @@ import {
   WebSocketServer,
   WsException,
 } from '@nestjs/websockets';
+import { type GameState } from '@repo/shared/src/interfaces/game';
+import { type Player } from '@repo/shared/src/interfaces/player';
 import type { Cache } from 'cache-manager';
 import { customAlphabet } from 'nanoid';
 import { Server, Socket } from 'socket.io';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { LobbyGateway, Player } from 'src/lobby/lobby.gateway';
+import { LobbyGateway } from 'src/lobby/lobby.gateway';
 import { CreateGameDto } from './dto/create-game.dto';
 import { GameService } from './game.service';
-
-interface GameState {
-  id: string;
-  players: {
-    id: string;
-    nickname: string;
-    cards: string[];
-    token: string;
-    hasDrawnCard: boolean;
-  }[];
-  currentPlayer: string;
-  currentColor?: string;
-  deck: string[];
-  discardPile: string[];
-  direction: 'clockwise' | 'counterclockwise';
-  status: 'waiting' | 'in_progress' | 'finished';
-}
 
 const GAME_STATE_CACHE_KEY = 'game';
 
@@ -214,7 +199,6 @@ export class GameGateway {
           );
         }
       }
-
     } else {
       client.emit('error', { message: 'Invalid move' });
     }
@@ -240,7 +224,6 @@ export class GameGateway {
     );
 
     if (player) {
-
       if (player.hasDrawnCard) {
         client.emit('error', {
           message: 'You can only draw one card per turn',
@@ -347,8 +330,6 @@ export class GameGateway {
     const topCard = gameState.discardPile[gameState.discardPile.length - 1];
     const [topColor, topValue] = [topCard[0], topCard.split('_')[1]];
     const [cardColor, cardValue] = [card[0], card.split('_')[1]];
-
-
 
     if (
       (topValue === 'Draw4' || topColor === 'W') &&
