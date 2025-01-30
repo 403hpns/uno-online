@@ -1,4 +1,4 @@
-# UNO Online 🃏
+# UNO Online [![wakatime](https://wakatime.com/badge/user/053506b8-2534-4978-816c-49eb1cab4ac9/project/8b684335-2214-4dc1-91f6-d27d1381299b.svg)](https://wakatime.com/badge/user/053506b8-2534-4978-816c-49eb1cab4ac9/project/8b684335-2214-4dc1-91f6-d27d1381299b)
 
 Welcome to **UNO Online**, a real-time multiplayer implementation of the classic card game UNO, built with modern web technologies. This project allows players to create lobbies, invite friends, and play UNO together in real-time.
 
@@ -6,7 +6,7 @@ Welcome to **UNO Online**, a real-time multiplayer implementation of the classic
 
 ## 🚀 Features
 
-- **Real-time multiplayer gameplay**: Play UNO with friends or random players online.
+- **Real-time multiplayer gameplay**: Play UNO with friends.
 - **Lobby system**: Create or join lobbies with unique codes.
 - **Player authentication**: Unique tokens ensure secure and persistent player identification.
 - **Interactive gameplay**: Draw cards, play cards, and interact with other players in real-time.
