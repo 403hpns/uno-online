@@ -2,24 +2,10 @@ import { socket } from '@/lib/socket';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import type { LobbyState } from '~/interfaces/lobby';
 import { usePlayerStore } from './player';
 const CREATE_LOBBY_EVENT = 'lobby.create';
 const JOIN_LOBBY_EVENT = 'lobby.join';
-
-interface CreateLobbyDto {
-  id: string;
-  players: { id: string; username: string }[];
-}
-
-type LobbyPlayer = {
-  id: string;
-  username: string;
-};
-
-type LobbyState = {
-  id: string;
-  players: LobbyPlayer[];
-};
 
 export type WsException = { status: string; message: string };
 
@@ -43,11 +29,10 @@ export const useLobbyStore = defineStore('lobby', () => {
     });
 
     socket.on('lobby.update', (data) => {
-      lobbyState.value = { id: data.id, players: [...data.players] };
+      lobbyState.value = { ...data };
     });
 
     socket.on('game.start', async () => {
-      console.log('Game is starting...');
       startCountdown();
     });
 
@@ -75,42 +60,34 @@ export const useLobbyStore = defineStore('lobby', () => {
 
   const createLobby = async () => {
     const response = await socket.emitWithAck(CREATE_LOBBY_EVENT, {
-      username: playerStore.nickname,
+      nickname: playerStore.player.nickname,
     });
-
     if (response) {
-      lobbyState.value = { id: response.id, players: response.players };
+      lobbyState.value = { ...response };
       router.push({ path: `/lobby/${response.id}`, replace: true });
     }
   };
 
   const joinLobby = (lobbyCode: string) => {
-    console.log('[LOBBY] joinLobby fn executed | ', lobbyCode);
-
     if (lobbyState.value?.id === lobbyCode) {
-      console.log('[LOBBY] Lobby already mounted.');
       return;
     }
 
     isLoading.value = true;
 
-    console.log('[LOBBY] Sending join event via WS...');
-
     socket.emit(
       JOIN_LOBBY_EVENT,
-      { lobbyId: lobbyCode, username: playerStore.nickname },
+      { lobbyId: lobbyCode, nickname: playerStore.player.nickname },
       (response: {
         id: string;
-        players: { id: string; username: string }[];
+        ownerId: string;
+        players: { id: string; nickname: string }[];
       }) => {
-        console.log('[LOBBY] Joined to lobby. Response data: ', response);
-
         lobbyState.value = {
           id: response.id,
+          ownerId: response.ownerId,
           players: response.players,
         };
-
-        console.log('Updated lobbyState:', lobbyState.value);
 
         if (route.params.id !== response.id) {
           router.push({ path: `/lobby/${response.id}`, replace: true });
@@ -122,7 +99,6 @@ export const useLobbyStore = defineStore('lobby', () => {
   };
 
   const startGame = () => {
-    console.log('Starting game...');
     socket.emit('game.create', {
       lobbyId: lobbyState.value?.id,
       players: lobbyState.value?.players,

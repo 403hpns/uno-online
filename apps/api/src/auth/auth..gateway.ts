@@ -24,20 +24,15 @@ export class AuthGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger('🎮 AuthGateway');
 
   async handleConnection(client: Socket) {
-    const { username } = client.handshake.auth;
+    const { nickname } = client.handshake.auth;
 
     this.logger.log(
-      `[+] Client ${client.id} connected with username ${username}`,
+      `[+] Client ${client.id} connected with nickname ${nickname}`,
     );
   }
 
   async handleDisconnect(client: Socket) {
     const token = client.data.player?.token;
     this.logger.log(`[-] Client ${client.id} with token ${token} disconnected`);
-    return;
-
-    if (token) {
-      await this.cacheManager.del(`player:${token}`);
-    }
   }
 }

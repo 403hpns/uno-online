@@ -2,38 +2,23 @@ import { socket } from '@/lib/socket';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
-interface Player {
-  id: string;
-  username: string;
-  token: string;
-  cards: string[];
-}
-
-interface GameState {
-  id: string;
-  players: Player[];
-  currentPlayer: string;
-  deck: string[];
-  discardPile: string[];
-  direction: 'clockwise' | 'counterclockwise';
-  status: 'waiting' | 'in_progress' | 'finished';
-}
+import type { GameState } from '~/interfaces/game';
 
 export const useGameStore = defineStore('game', () => {
   const gameState = ref<GameState | null>(null);
-  const currentColor = ref<'red' | 'blue' | 'green' | 'yellow' | 'wild'>();
+  const currentColor = ref();
   const router = useRouter();
 
   const bindEvents = () => {
     socket.on('game.update', (state: GameState) => {
       gameState.value = state;
-      currentColor.value =
-        state.discardPile.length > 0
-          ? (state.discardPile[state.discardPile.length - 1]
-              .split('_')[0]
-              .toLowerCase() as 'red' | 'blue' | 'green' | 'yellow')
-          : 'red';
+      currentColor.value = state.currentColor;
+    });
+
+    socket.on('game.pickCardColor', (ack) => {
+      const color = prompt('Pick a color');
+
+      ack({ color });
     });
 
     socket.on('game.created', (gameState) => {

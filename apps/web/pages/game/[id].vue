@@ -4,14 +4,16 @@ import { useRoute } from 'vue-router';
 import { useGameStore } from '~/stores/game';
 import Table4 from '/images/Table_4.png';
 
-type DeckCardColor = 'yellow' | 'green' | 'blue' | 'red';
+const DEBUG = false;
+
+type DeckCardColor = 'Yellow' | 'Green' | 'Blue' | 'Red';
 
 const route = useRoute();
 const gameStore = useGameStore();
 const playerStore = usePlayerStore();
 
 const gameId = route.params.id as string;
-const currentColor = ref<DeckCardColor>('yellow');
+const currentColor = ref<DeckCardColor>('Red');
 
 const socketStore = useSocketStore();
 
@@ -48,12 +50,12 @@ const isValidMove = (playerCard: string) => {
 
 const currentPlayer = computed(() => {
   return gameStore.gameState?.players.find(
-    (player) => player.token === playerStore.user.token
+    (player) => player.id === playerStore.player.id
   );
 });
 const secondPlayer = computed(() => {
   return gameStore.gameState?.players.find(
-    (player) => player.token !== playerStore.user.token
+    (player) => player.id !== playerStore.player.id
   );
 });
 </script>
@@ -64,7 +66,7 @@ const secondPlayer = computed(() => {
     :style="{ backgroundImage: `url(${Table4})` }"
   >
     <div
-      v-if="false"
+      v-if="DEBUG"
       class="max-h-full gap-4 flex flex-col items-center justify-center fixed m-4 top-0 left-0 bg-black/10 backdrop-blur-3xl p-4 rounded-lg"
     >
       <span class="font-black">DEBUG GAME DATA</span>
@@ -73,7 +75,7 @@ const secondPlayer = computed(() => {
         {{
           JSON.stringify(
             gameStore.gameState?.players.find(
-              (player) => player.token === playerStore.user.token
+              (player) => player.id === playerStore.player.id
             ),
             null,
             2
@@ -88,12 +90,23 @@ const secondPlayer = computed(() => {
 
     <div class="container mx-auto grid grid-cols-1 grid-rows-3 h-full">
       <!-- Karty przeciwnika (zakryte) -->
-      <div class="col-span-1 flex items-center justify-center">
-        <Card
-          v-for="card in secondPlayer?.cards"
-          :id="card"
-          :key="`card-${card}`"
-        />
+      <div class="flex flex-col col-span-1 justify-center">
+        <p
+          class="font-black text-xl"
+          :class="{
+            'opacity-50':
+              gameStore.gameState?.currentPlayer !== secondPlayer?.id,
+          }"
+        >
+          {{ secondPlayer?.nickname }}
+        </p>
+        <div class="flex items-center justify-center">
+          <Card
+            v-for="card in secondPlayer?.cards"
+            :id="card"
+            :key="`card-${card}`"
+          />
+        </div>
       </div>
 
       <!-- Środkowa część boardu -->
@@ -102,39 +115,47 @@ const secondPlayer = computed(() => {
         <Card id="Deck" @click="drawCard" :hoverable="true" />
 
         <!-- Karty na stole -->
-        <div
+        <Card
           v-if="gameStore.gameState?.discardPile.length"
-          class="w-16 h-24 bg-white rounded-lg shadow-md"
-          :style="{ backgroundColor: currentColor }"
-        >
-          <img
-            :src="`/images/cards/${gameStore.gameState.discardPile[gameStore.gameState.discardPile.length - 1]}.png`"
-            alt="Card"
-            class="w-full h-full"
-          />
-        </div>
+          :id="
+            gameStore.gameState.discardPile[
+              gameStore.gameState.discardPile.length - 1
+            ]
+          "
+        />
 
         <!-- Kolor aktualnej karty -->
         <div
           class="aspect-square w-12 rounded-full shadow-xl"
           :class="{
-            'bg-red-500': currentColor === 'red',
-            'bg-blue-500': currentColor === 'blue',
-            'bg-green-500': currentColor === 'green',
-            'bg-yellow-500': currentColor === 'yellow',
+            'bg-red-500': gameStore.gameState?.currentColor === 'Red',
+            'bg-blue-500': gameStore.gameState?.currentColor === 'Blue',
+            'bg-green-500': gameStore.gameState?.currentColor === 'Green',
+            'bg-yellow-500': gameStore.gameState?.currentColor === 'Yellow',
           }"
         />
       </div>
 
       <!-- Karty gracza -->
-      <div class="col-span-1 flex items-center justify-center z-50">
-        <Card
-          v-for="card in currentPlayer?.cards"
-          :id="card"
-          :key="`card-${card}`"
-          :hoverable="true"
-          @click="playCard(card)"
-        />
+      <div class="flex flex-col col-span-1 justify-center gap-2">
+        <p
+          class="font-black text-xl"
+          :class="{
+            'opacity-50':
+              gameStore.gameState?.currentPlayer !== currentPlayer?.id,
+          }"
+        >
+          {{ currentPlayer?.nickname }}
+        </p>
+        <div class="col-span-1 flex items-center justify-center">
+          <Card
+            v-for="card in currentPlayer?.cards"
+            :id="card"
+            :key="`card-${card}`"
+            :hoverable="true"
+            @click="playCard(card)"
+          />
+        </div>
       </div>
     </div>
   </div>

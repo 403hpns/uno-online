@@ -1,4 +1,4 @@
 export class CreateLobbyDto {
-  username: string;
+  nickname: string;
   playerToken: string;
 }

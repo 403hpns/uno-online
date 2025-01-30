@@ -7,12 +7,12 @@ export const useSocketStore = defineStore('socket', () => {
 
   const connect = () => {
     if (!socket.connected) {
-      console.log(
-        '%cConnecting to socket...',
-        'color: green',
-        playerStore.nickname,
-        playerStore.user.token
-      );
+      socket.auth = {
+        nickname: playerStore.player.nickname,
+        token: playerStore.player.token,
+      };
+
+      socket.connect();
     }
   };
 

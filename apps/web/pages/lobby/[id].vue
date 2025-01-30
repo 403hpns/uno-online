@@ -4,7 +4,9 @@ import MainMenuLayout from '@/layouts/MainMenuLayout.vue';
 import { useLobbyStore } from '@/stores/lobby';
 import { useRoute } from 'vue-router';
 
+const socketStore = useSocketStore();
 const lobbyStore = useLobbyStore();
+const playerStore = usePlayerStore();
 
 const route = useRoute();
 
@@ -12,15 +14,19 @@ const copyLobbyCode = () => {
   navigator.clipboard.writeText(lobbyStore.lobbyState?.id || '');
 };
 
-watchEffect(() => {
+onMounted(() => {
   const lobbyId = route.params.id as string;
 
-  if (lobbyId) {
+  if (lobbyId && lobbyId !== lobbyStore.lobbyState?.id) {
     lobbyStore.joinLobby(lobbyId);
   }
 });
 
 const MAX_PLAYERS_IN_LOBBY = 2;
+
+onMounted(() => {
+  socketStore.connect();
+});
 </script>
 
 <template>
@@ -48,9 +54,15 @@ const MAX_PLAYERS_IN_LOBBY = 2;
 
       <div class="flex flex-col">
         <p class="font-bold">Gracze:</p>
-        <ul>
-          <li v-for="player in lobbyStore.lobbyState?.players" :key="player.id">
-            {{ player.username }}
+        <ul class="mt-2 gap-1.5 flex flex-col">
+          <li
+            v-for="player in lobbyStore.lobbyState?.players"
+            :key="player.id"
+            class="flex gap-1"
+          >
+            {{ player.nickname }}
+            <p v-if="player.id === lobbyStore.lobbyState?.ownerId">👑</p>
+            <p v-if="player.id === playerStore.player.id">(Ty)</p>
           </li>
         </ul>
       </div>

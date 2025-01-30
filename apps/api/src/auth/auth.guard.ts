@@ -4,54 +4,71 @@ import {
   ExecutionContext,
   Inject,
   Injectable,
+  Logger,
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
+import { randomUUID } from 'crypto';
 import { customAlphabet } from 'nanoid';
 import { Socket } from 'socket.io';
+import { Player } from 'src/lobby/lobby.gateway';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {}
 
+  private readonly logger = new Logger('🛡️  AuthGuard');
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const client = context.switchToWs().getClient<Socket>();
-    const token = client.handshake.auth.token;
-
+    const token = await client.handshake.auth.token;
     if (!token) {
+      this.logger.log(`Client doesn't have a token, creating a new session`);
+
       await this.createSession(client);
       return true;
     }
 
-    const player = (await this.cacheManager.get(`player:${token}`)) as any;
+    this.logger.log(`Client have a token: ${token}`);
+
+    const player = await this.cacheManager.get<Player>(`player:${token}`);
     if (!player) {
+      this.logger.log('Player not found, creating a new session'); // Should happen only on manually deleted from cache
       await this.createSession(client);
       return true;
     }
 
     client.data.player = {
-      id: player.socketId,
-      token,
-      username: player.username,
+      id: player.id,
+      token: player.token,
+      nickname: player.nickname,
     };
+
+    client.emit('player.update', {
+      nickname: player.nickname,
+      id: player.id,
+      token: player.token,
+    });
 
     return true;
   }
 
   async createSession(client: Socket) {
-    const { username } = client.handshake.auth;
+    const { nickname } = client.handshake.auth;
 
     const sessionToken = customAlphabet(
       'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
       16,
     )();
+    const userId = randomUUID();
 
     await this.cacheManager.set(`player:${sessionToken}`, {
-      socketId: client.id,
+      id: userId,
       token: sessionToken,
-      username,
+      nickname,
     });
 
-    client.emit('player.token', { token: sessionToken });
-    client.data.player = { id: client.id, token: sessionToken, username };
+    client.emit('player.update', { nickname, id: userId, token: sessionToken });
+    client.data.player = { id: userId, nickname, token: sessionToken };
+    client.handshake.auth = { token: sessionToken, nickname };
   }
 }

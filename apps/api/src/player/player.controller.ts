@@ -24,7 +24,7 @@ export class PlayerController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePlayerDto: UpdatePlayerDto) {
-    return this.playerService.update(+id, updatePlayerDto);
+    return this.playerService.update(id, updatePlayerDto);
   }
 
   @Delete(':id')

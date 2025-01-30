@@ -1,46 +1,32 @@
 import { socket } from '@/lib/socket';
+import { useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
-import { ref, watch } from 'vue';
-
-interface Player {
-  id: string;
-  token: string;
-  username: string;
-}
+import { ref } from 'vue';
+import type { Player } from '~/interfaces/player';
 
 const LS_PLAYER_NAME_KEY = 'player:nickname';
 const LS_PLAYER_TOKEN_KEY = 'player:token';
 
 export const usePlayerStore = defineStore('player', () => {
-  const nickname = ref(localStorage.getItem(LS_PLAYER_NAME_KEY) || '');
-  const user = ref<Player>({
+  const token = useStorage(LS_PLAYER_TOKEN_KEY);
+  const nickname = useStorage(LS_PLAYER_NAME_KEY);
+
+  const player = ref<Partial<Player>>({
     id: '',
-    token: localStorage.getItem(LS_PLAYER_TOKEN_KEY) || '',
-    username: nickname.value,
+    token,
+    nickname,
   });
 
-  const setToken = (token: string) => {
-    console.log('Setting token to', token);
-    user.value.token = token;
-    localStorage.setItem(LS_PLAYER_TOKEN_KEY, token);
-  };
-
   const bindEvents = () => {
-    socket.on('player.token', ({ token }: { token: string }) => {
-      console.log('Received player token:', token);
-      setToken(token);
+    socket.on('player.token', ({ token: newToken }: { token: string }) => {
+      token.value = newToken;
+      socket.auth = { token: newToken };
+    });
 
-      socket.auth = {
-        token,
-      };
+    socket.on('player.update', (payload) => {
+      player.value = { ...player.value, ...payload };
     });
   };
 
-  watch(nickname, () => {
-    console.log('[WATCHER] Nickname changed to', nickname.value);
-    localStorage.setItem(LS_PLAYER_NAME_KEY, nickname.value);
-    user.value.username = nickname.value;
-  });
-
-  return { nickname, user, bindEvents, setToken };
+  return { player, bindEvents };
 });
