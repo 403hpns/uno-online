@@ -46,7 +46,12 @@ jobs:
             git pull origin master
             pnpm install
             pnpm build
-            pm2 restart uno-online
+
+            if ! pm2 list | grep -q "uno-online"; then
+              pnpm start --name uno-online
+            else
+              pm2 restart uno-online
+            fi
           EOF
 
       - name: Check app status
