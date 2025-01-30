@@ -42,6 +42,9 @@ jobs:
       - name: Deploy to VPS
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} << 'EOF'
+            npm install -g pnpm
+            npm install -g pm2
+
             cd /var/www/uno-online
             git pull origin master
             pnpm install
