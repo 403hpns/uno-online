@@ -10,6 +10,9 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      allowedHosts: ['403hpns.dev'],
+    },
   },
 
   modules: ['@pinia/nuxt', '@nuxt/icon', '@vueuse/nuxt'],
