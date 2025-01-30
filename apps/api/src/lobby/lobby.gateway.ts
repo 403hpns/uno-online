@@ -121,7 +121,6 @@ export class LobbyGateway implements OnGatewayDisconnect {
       },
       6000 * 60 * 24, // 24 hours
     );
-    //
 
     this.playerService.update(token, { currentLobbyId: lobbyId });
 

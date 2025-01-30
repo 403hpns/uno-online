@@ -22,6 +22,6 @@ function goToTab(tab: keyof typeof tabs) {
 
 <template>
   <MainMenuLayout>
-    <component :change-tab="goToTab" :is="tabs[currentTab]" />
+    <component @changeTab="goToTab" :is="tabs[currentTab]" />
   </MainMenuLayout>
 </template>

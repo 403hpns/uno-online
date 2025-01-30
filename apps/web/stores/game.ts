@@ -5,23 +5,25 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 export const useGameStore = defineStore('game', () => {
-  const gameState = ref<GameState | null>(null);
+  const gameState = ref<GameState>();
   const currentColor = ref();
   const router = useRouter();
+  const isColorPickerVisible = ref(false);
+  let ackCallback: ((response: { color: string }) => void) | null = null;
 
   const bindEvents = () => {
     socket.on('game.update', (state: GameState) => {
-      gameState.value = state;
+      gameState.value = { ...state };
       currentColor.value = state.currentColor;
     });
 
     socket.on('game.pickCardColor', (ack) => {
-      const color = prompt('Pick a color');
-
-      ack({ color });
+      isColorPickerVisible.value = true;
+      ackCallback = ack;
     });
 
     socket.on('game.created', (gameState) => {
+      gameState.value = { ...gameState };
       router.push({ path: `/game/${gameState.id}`, replace: true });
     });
 
@@ -39,12 +41,20 @@ export const useGameStore = defineStore('game', () => {
     socket.emit('game.join', gameId);
   };
 
-  const playCard = (gameId: string, card: string) => {
-    socket.emit('game.playCard', { gameId, card });
+  const playCard = (card: string) => {
+    socket.emit('game.playCard', { gameId: gameState.value?.id, card });
   };
 
-  const drawCard = (gameId: string) => {
-    socket.emit('game.drawCard', gameId);
+  const drawCard = () => {
+    socket.emit('game.drawCard', gameState.value?.id);
+  };
+
+  const pickColor = (color: 'Red' | 'Green' | 'Blue' | 'Yellow') => {
+    if (ackCallback) {
+      ackCallback({ color });
+      isColorPickerVisible.value = false;
+      ackCallback = null;
+    }
   };
 
   return {
@@ -54,5 +64,7 @@ export const useGameStore = defineStore('game', () => {
     joinGame,
     playCard,
     drawCard,
+    pickColor,
+    isColorPickerVisible,
   };
 });

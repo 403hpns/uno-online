@@ -162,7 +162,6 @@ export class GameGateway {
         } else if (value === 'Draw4') {
           const response = await client.emitWithAck('game.pickCardColor');
 
-          // Change color and allow to play over special card.
           gameState.currentColor = response.color;
 
           const nextPlayer = gameState.players.find(

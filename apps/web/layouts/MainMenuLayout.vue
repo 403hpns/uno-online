@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import MenuBg from '/images/uno-bg.jpg';
-
-const showModal = ref(true);
 </script>
 
 <template>
@@ -15,7 +13,6 @@ const showModal = ref(true);
     >
       <div class="flex flex-col gap-12">
         <MenuLogo />
-
         <div class="min-w-[450px] rounded-xl bg-black/10 p-8 shadow-2xl">
           <slot />
         </div>

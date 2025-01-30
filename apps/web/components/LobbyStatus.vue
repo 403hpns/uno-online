@@ -3,7 +3,6 @@ import { useLobbyStore } from '@/stores/lobby';
 import { ref } from 'vue';
 
 const lobbyStore = useLobbyStore();
-
 const lobbyCode = ref('');
 </script>
 
@@ -12,7 +11,7 @@ const lobbyCode = ref('');
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-2">
         <label>Kod lobby</label>
-        <UiInput v-model="lobbyCode" placeholder="8stRE4Je" />
+        <UiInput v-model="lobbyCode" placeholder="np. 8stRE4Je" />
 
         <button
           @click="lobbyStore.joinLobby(lobbyCode)"

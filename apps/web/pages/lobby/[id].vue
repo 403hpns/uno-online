@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import MainMenuLayout from '@/layouts/MainMenuLayout.vue';
-
 import { useLobbyStore } from '@/stores/lobby';
 import { useRoute } from 'vue-router';
+
+definePageMeta({
+  layout: 'main-menu-layout',
+});
 
 const socketStore = useSocketStore();
 const lobbyStore = useLobbyStore();

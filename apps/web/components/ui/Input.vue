@@ -5,6 +5,7 @@ const { placeholder } = defineProps<{
 }>();
 
 const emit = defineEmits(['update:modelValue']);
+
 const $updateInputValue = (event: Event) => {
   const input = event.target as HTMLInputElement;
   emit('update:modelValue', input.value);
@@ -13,6 +14,7 @@ const $updateInputValue = (event: Event) => {
 
 <template>
   <input
+    v-bind="$attrs"
     :value="modelValue"
     :placeholder="placeholder"
     @input="$updateInputValue"
