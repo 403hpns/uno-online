@@ -121,4 +121,4 @@ jobs:
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd /var/www/uno-online
             pm2 restart uno-api || pm2 start /var/www/uno-online/apps/api/dist/main.js --name uno-api
-            npx serve -s /var/www/uno-online/apps/web/.output/public --port 3001 --name uno-web
+            npx serve /var/www/uno-online/apps/web/.output/public -p 3001 -n uno-web
