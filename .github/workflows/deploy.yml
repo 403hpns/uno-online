@@ -31,19 +31,18 @@ jobs:
 
       - name: Build API
         run: |
-          pnpm turbo run build --filter=api --scope=apps/api
+          pnpm build --filter=api
 
-      - name: Build Web (Nuxt 3)
+      - name: Build Web
         run: |
-          pnpm turbo run generate --filter=web --scope=apps/web
+          pnpm --filter=web generate
 
       - name: Deploy to VPS
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
-          port: ${{ secrets.VPS_PORT }}
           username: ${{ secrets.VPS_USERNAME }}
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /var/www/uno-online &&
             pm2 restart uno-api || pm2 start /var/www/uno-online/apps/api/dist/main.js --name uno-api
