@@ -116,9 +116,5 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            export PATH=$PATH:/usr/local/bin:/usr/bin
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd /var/www/uno-online
             pm2 restart uno-api || pm2 start /var/www/uno-online/apps/api/dist/main.js --name uno-api
-            npx serve /var/www/uno-online/apps/web/.output/public -p 3001 -n uno-web

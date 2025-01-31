@@ -4,6 +4,11 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineNuxtConfig({
   ssr: false,
 
+  // Just for private purposes: https://403hpns.dev/projects/uno
+  app: {
+    baseURL: '/projects/uno/',
+  },
+
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
 
