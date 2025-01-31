@@ -116,6 +116,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/uno-online &&
+            cd /var/www/uno-online
+            npm install -g pm2 serve
             pm2 restart uno-api || pm2 start /var/www/uno-online/apps/api/dist/main.js --name uno-api
-            npx serve -s /var/www/uno-online/apps/web/.output/public --port 3001 --name uno-web
+            serve -s /var/www/uno-online/apps/web/.output/public --port 3001 --name uno-web
