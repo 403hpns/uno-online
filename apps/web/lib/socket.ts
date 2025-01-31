@@ -1,12 +1,8 @@
-import { io } from 'socket.io-client';
+import { Manager } from 'socket.io-client';
 
-const URL = 'http://localhost:4000';
-
-const socketOptions = {
+const manager = new Manager({
+  port: 4000,
   autoConnect: false,
-  reconnection: true,
-};
-
-export const socket = io(URL, {
-  ...socketOptions,
 });
+
+export const socket = manager.socket('/');

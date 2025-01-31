@@ -10,6 +10,9 @@ const socketStore = useSocketStore();
 const lobbyStore = useLobbyStore();
 const playerStore = usePlayerStore();
 
+const { text, copy, copied } = useClipboard({
+  source: lobbyStore.lobbyState?.id!,
+});
 const route = useRoute();
 
 const copyLobbyCode = () => {
@@ -46,11 +49,13 @@ onMounted(() => {
           <strong class="font-black">#{{ lobbyStore.lobbyState?.id }}</strong>
         </h3>
 
+        <Icon v-if="copied" :size="16" name="lucide:check" />
         <Icon
+          v-else
           name="lucide:copy"
           :size="16"
-          class="cursor-pointer hover:scale-110 hover:text-yellow-500"
-          @click="copyLobbyCode"
+          class="transition-colors cursor-pointer hover:scale-110 hover:text-yellow-500"
+          @click="copy()"
         />
       </div>
 
