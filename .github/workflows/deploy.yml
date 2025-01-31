@@ -92,30 +92,28 @@ jobs:
           path: ./apps/web/.output/public
 
       - name: Deploy API to VPS
-        uses: burnett01/rsync-deployments@5.2
+        uses: appleboy/scp-action@master
         with:
-          switches: -avzr --delete
-          path: ./apps/api/dist/
-          remote_path: /var/www/uno-online/apps/api/dist/
-          remote_host: ${{ secrets.VPS_HOST }}
-          remote_user: ${{ secrets.VPS_USERNAME }}
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: './apps/api/dist/*'
+          target: '/var/www/uno-online/apps/api/dist/'
 
       - name: Deploy Web to VPS
-        uses: burnett01/rsync-deployments@5.2
+        uses: appleboy/scp-action@master
         with:
-          switches: -avzr --delete
-          path: ./apps/web/.output/public/
-          remote_path: /var/www/uno-online/apps/web/.output/public/
-          remote_host: ${{ secrets.VPS_HOST }}
-          remote_user: ${{ secrets.VPS_USERNAME }}
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: './apps/web/.output/public/*'
+          target: '/var/www/uno-online/apps/web/.output/public/'
 
       - name: Start services
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
+          username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /var/www/uno-online &&
