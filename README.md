@@ -60,7 +60,7 @@ Welcome to **UNO Online**, a real-time multiplayer implementation of the classic
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/uno-online.git
+   git clone https://github.com/403hpns/uno-online.git
    cd uno-online
 2. **Install dependencies**
    ```bash
