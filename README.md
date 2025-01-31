@@ -56,6 +56,9 @@ Welcome to **UNO Online**, a real-time multiplayer implementation of the classic
 - Docker (optional, for Redis)
 - Redis (can be installed locally or via Docker)
 
+> [!NOTE]  
+> By default, Redis is disabled, and NestJS uses the default cache manager. To use Redis instead, run `docker-compose up -d` and rename the `.env.example` file to `.env`. Make sure the `USE_REDIS` variable is set to `true`.
+
 ### Installation
 
 1. **Clone the repository**:
@@ -66,7 +69,7 @@ Welcome to **UNO Online**, a real-time multiplayer implementation of the classic
    ```bash
    pnpm install
    ```
-3. **Run Docker**
+3. **Run Docker** (optional)
    ```bash
    docker compose up -d
    ```
