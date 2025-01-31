@@ -2,6 +2,8 @@
 
 Welcome to **UNO Online**, a real-time multiplayer implementation of the classic card game UNO, built with modern web technologies. This project allows players to create lobbies, invite friends, and play UNO together in real-time.
 
+> [!IMPORTANT]  
+> This project is still in development. Please be aware of any existing bugs or missing features.
 
 ---
 
@@ -88,5 +90,10 @@ Contributions are welcome! If you'd like to contribute to this project, please f
 2. Create a new branch for your feature or bugfix.
 3. Commit your changes and push to your fork.
 4. Submit a pull request with a detailed description of your changes.
+
+## 📂 Assets
+Special thanks to the authors of the assets used in this project.
+
+- UNO Asset Pack - https://alexder.itch.io/uno-card-game-asset-pack
 
       
