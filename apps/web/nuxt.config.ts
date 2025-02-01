@@ -20,5 +20,11 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@pinia/nuxt', '@nuxt/icon', '@vueuse/nuxt'],
+  i18n: {
+    locales: ['en', 'pl'],
+    defaultLocale: 'en',
+    vueI18n: './i18n.config.ts',
+  },
+
+  modules: ['@pinia/nuxt', '@nuxt/icon', '@vueuse/nuxt', '@nuxtjs/i18n'],
 });
