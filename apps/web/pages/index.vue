@@ -24,9 +24,6 @@ const { setLocale } = useI18n();
 
 <template>
   <MainMenuLayout>
-    <button @click="setLocale('en')">en</button>
-    <button @click="setLocale('pl')">pl</button>
-
     <component @changeTab="goToTab" :is="tabs[currentTab]" />
   </MainMenuLayout>
 </template>

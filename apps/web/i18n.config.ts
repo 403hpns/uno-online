@@ -29,6 +29,9 @@ export default defineI18nConfig(() => ({
           start: 'Start the game',
         },
       },
+      utils: {
+        forExample: 'e.g',
+      },
     },
     pl: {
       menu: {
@@ -55,6 +58,9 @@ export default defineI18nConfig(() => ({
           waiting: 'Oczekiwanie na graczy',
           start: 'Rozpocznij grę',
         },
+      },
+      utils: {
+        forExample: 'np',
       },
     },
   },

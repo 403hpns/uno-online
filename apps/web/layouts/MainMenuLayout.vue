@@ -12,9 +12,11 @@ import MenuBg from '/images/uno-bg.jpg';
       class="flex h-screen items-center justify-center backdrop-blur-xl backdrop-brightness-90"
     >
       <LocalizationPicker />
-      <div class="flex flex-col gap-12">
+      <div class="flex flex-col gap-12 container mx-6">
         <MenuLogo />
-        <div class="min-w-[450px] rounded-xl bg-black/10 p-8 shadow-2xl">
+        <div
+          class="rounded-xl bg-black/10 p-8 shadow-2xl w-full md:w-md mx-auto"
+        >
           <slot />
         </div>
       </div>

@@ -21,7 +21,7 @@ const $handleTabChange = () => {
     <UiInput
       v-model="playerStore.player.nickname"
       name="nickname"
-      placeholder="Co0lGuy77"
+      :placeholder="`${$t('utils.forExample')}. Co0lGuy77`"
     />
 
     <button
