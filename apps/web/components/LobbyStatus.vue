@@ -10,7 +10,7 @@ const lobbyCode = ref('');
   <div class="flex w-full flex-col gap-4">
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-2">
-        <label>Kod lobby</label>
+        <label>{{ $t('menu.form.lobbyCode.label') }}</label>
         <UiInput v-model="lobbyCode" placeholder="np. 8stRE4Je" />
 
         <button
@@ -19,7 +19,7 @@ const lobbyCode = ref('');
         >
           <Play />
           <Icon name="lucide:play" />
-          Dołącz
+          {{ $t('menu.form.lobbyCode.joinBtn') }}
         </button>
       </div>
 
@@ -30,7 +30,7 @@ const lobbyCode = ref('');
         class="flex w-full items-center justify-center gap-2.5 rounded-lg bg-green-500 px-4 py-3 font-bold uppercase shadow-inner shadow-green-400 transition hover:bg-green-400"
       >
         <Icon name="lucide:plus" />
-        Stwórz lobby
+        {{ $t('menu.form.lobbyCode.createBtn') }}
       </button>
     </div>
   </div>

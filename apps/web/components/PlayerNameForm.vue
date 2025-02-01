@@ -17,7 +17,7 @@ const $handleTabChange = () => {
 
 <template>
   <form class="flex flex-col gap-2">
-    <label for="nickname">Nazwa</label>
+    <label for="nickname">{{ $t('menu.form.nickname.label') }}</label>
     <UiInput
       v-model="playerStore.player.nickname"
       name="nickname"
@@ -31,7 +31,7 @@ const $handleTabChange = () => {
       class="flex items-center justify-center gap-2.5 rounded-lg bg-yellow-500 px-4 py-3 font-bold uppercase shadow-inner shadow-yellow-400 transition hover:bg-yellow-400"
     >
       <Icon name="lucide:tv-minimal-play" />
-      Graj
+      {{ $t('menu.form.nickname.playBtn') }}
     </button>
   </form>
 </template>
