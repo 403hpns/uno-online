@@ -1,6 +1,6 @@
 import { Manager } from 'socket.io-client';
 
-const manager = new Manager('wss://403hpns.dev', {
+const manager = new Manager({
   autoConnect: false,
   transports: ['websocket'],
 });
