@@ -7,6 +7,17 @@ Welcome to **UNO Online**, a real-time multiplayer implementation of the classic
 
 ---
 
+## 🎮 Live demo
+
+You can already try out a live demo of the game in production! Just click the link below, create a lobby, and invite a friend.
+
+> [!TIP]  
+> Player data is saved in your browser's **localStorage**. If you want to play solo (against yourself), open another browser or an incognito tab.
+
+https://403hpns.dev/projects/uno/
+
+---
+
 ## 🚀 Features
 
 - **Real-time multiplayer gameplay**: Play UNO with friends.
@@ -54,7 +65,7 @@ Welcome to **UNO Online**, a real-time multiplayer implementation of the classic
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
+- Node.js
 - Docker (optional, for Redis)
 - Redis (can be installed locally or via Docker)
 
