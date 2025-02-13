@@ -36,9 +36,20 @@ export const useLobbyStore = defineStore('lobby', () => {
       startCountdown();
     });
 
-    socket.on('exception', (exception: WsException) =>
-      alert(exception.message)
-    );
+    socket.on('exception', (exception: WsException & { cause: any }) => {
+      const { message, cause } = exception;
+
+      alert(message);
+      isLoading.value = false;
+
+      switch (cause.pattern) {
+        case 'lobby.join':
+          router.push({ path: '/', replace: true });
+          break;
+        default:
+          break;
+      }
+    });
   };
 
   const startCountdown = () => {
@@ -68,34 +79,39 @@ export const useLobbyStore = defineStore('lobby', () => {
     }
   };
 
-  const joinLobby = (lobbyCode: string) => {
+  const joinLobby = async (lobbyCode: string) => {
     if (lobbyState.value?.id === lobbyCode) {
       return;
     }
 
-    isLoading.value = true;
+    try {
+      isLoading.value = true;
 
-    socket.emit(
-      JOIN_LOBBY_EVENT,
-      { lobbyId: lobbyCode, nickname: playerStore.player.nickname },
-      (response: {
+      const res = (await socket.emitWithAck(JOIN_LOBBY_EVENT, {
+        lobbyId: lobbyCode,
+        nickname: playerStore.player.nickname,
+      })) as {
         id: string;
         ownerId: string;
         players: { id: string; nickname: string }[];
-      }) => {
+      };
+
+      if (res) {
         lobbyState.value = {
-          id: response.id,
-          ownerId: response.ownerId,
-          players: response.players,
+          id: res.id,
+          ownerId: res.ownerId,
+          players: res.players,
         };
 
-        if (route.params.id !== response.id) {
-          router.push({ path: `/lobby/${response.id}`, replace: true });
+        if (route.params.id !== res.id) {
+          router.push({ path: `/lobby/${res.id}`, replace: true });
         }
-
-        isLoading.value = false;
       }
-    );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      isLoading.value = false;
+    }
   };
 
   const startGame = () => {
